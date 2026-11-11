@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Virtual Garage — learn car maintenance by doing it</title>
+<link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ---------------------------------------------------------- sidebar -->
+  <aside class="side">
+    <div class="brandmark" aria-hidden="true">VG</div>
+    <nav class="nav" id="sideNav" aria-label="Sections"></nav>
+    <div class="sidefoot">
+      <span class="led" aria-hidden="true"></span>
+      Progress saved on this device
+    </div>
+  </aside>
+
+  <!-- ------------------------------------------------------------- main -->
+  <div class="main">
+
+    <header class="topbar">
+      <div class="titles">
+        <p class="crumb">Virtual Garage</p>
+        <h1 id="viewTitle">My Garage</h1>
+      </div>
+      <div class="who">
+        <div class="avatar" id="avatar">GM</div>
+        <div class="whoText">
+          <p class="whoName" id="whoName">Guest Mechanic</p>
+          <p class="whoRank" id="whoRank">Apprentice Mechanic</p>
+        </div>
+        <div class="lvl">
+          <div class="lvlRow">
+            <span id="lvlText">Level 1</span>
+            <span class="xpText" id="xpText">0 / 400 XP</span>
+          </div>
+          <div class="xpBar"><i id="xpFill"></i></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="body">
+
+      <!-- -------------------------------------------------------- stage -->
+      <section class="stagecard">
+        <div class="stage-host" id="stage"></div>
+
+        <div class="zoomchip" id="zoomChip" hidden>
+          <button class="zc-back" id="zoomBack" aria-label="Back to the previous view" title="Back to the previous view (or double-click the stage)">‹</button>
+          <span class="zc-text" id="zoomText">Close-up</span>
+        </div>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        <div class="hovertip" id="hovertip" hidden></div>
+        <div class="partcard" id="partcard" hidden></div>
+        <div class="victory" id="victory" hidden></div>
+        <div class="sheet" id="sheet" hidden></div>
+
+        <!-- the toolbox: a drawer on the side of the stage -->
+        <button class="tooltab" id="toolTab" type="button" aria-expanded="false" aria-controls="toolbox">
+          <span class="tt-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 3.5a4.5 4.5 0 0 0-6 5.6L3.8 13.8a2 2 0 1 0 2.8 2.8l4.7-4.7a4.5 4.5 0 0 0 5.6-6l-2.6 2.6-2.3-2.3z"/></svg>
+          </span>
+          <span class="tt-label">Toolbox</span>
+          <span class="tt-count" id="toolCount">4</span>
+        </button>
+
+        <aside class="toolbox" id="toolbox" hidden aria-label="Toolbox">
+          <div class="tb-head">
+            <h2>Toolbox</h2>
+            <button class="tb-x" id="toolClose" type="button" aria-label="Close the toolbox" title="Close (T)">✕</button>
+          </div>
+          <p class="tb-sub" id="tbSub">Pick one tool, then use it on the car.</p>
+          <ul class="tb-list" id="toolList"></ul>
+          <div class="tb-foot">
+            <span class="tb-dot" id="tbDot" aria-hidden="true"></span>
+            <span id="tbInHand">Nothing in hand</span>
+          </div>
+        </aside>
+
+        <!-- what to do next: task, instruction, tool, progress -->
+        <section class="taskpanel" id="taskPanel" aria-hidden="true" aria-live="polite" aria-label="Current task">
+          <div class="tp-head">
+            <span class="tp-kicker" id="tpKicker"></span>
+            <span class="tp-pips" id="tpPips" aria-hidden="true"></span>
+            <button class="tp-restart" id="tpRestart" type="button"
+                    aria-label="Start this lesson again"
+                    title="Start this lesson again (shift-click clears all progress)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                   stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4.5 5.5v5h5"/><path d="M4.7 10.4A7.6 7.6 0 1 1 6 17.2"/>
+              </svg>
+            </button>
+          </div>
+          <h2 class="tp-title" id="tpTitle"></h2>
+          <p class="tp-hint" id="tpHint"></p>
+          <div class="tp-foot">
+            <span class="tp-tool" id="tpTool">
+              <span class="tp-toolico" id="tpToolIco" aria-hidden="true"></span>
+              <span class="tp-toolname" id="tpToolName"></span>
+            </span>
+            <span class="tp-next" id="tpNext"></span>
+          </div>
+        </section>
+      </section>
+
+      <!-- --------------------------------------------------------- rail -->
+      <aside class="rail">
+        <div class="railtop">
+          <div class="ring">
+            <svg viewBox="0 0 48 48" width="52" height="52" aria-hidden="true">
+              <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="4"/>
+              <circle id="ringFill" cx="24" cy="24" r="20" fill="none" stroke="#4d8bf8" stroke-width="4"
+                      stroke-linecap="round" stroke-dasharray="125.66" stroke-dashoffset="125.66"/>
+            </svg>
+            <span class="rt" id="ringText">0/4</span>
+          </div>
+          <div>
+            <h2>Learning Path</h2>
+            <p>Complete lessons to earn XP and level up.</p>
+          </div>
+        </div>
+        <div class="path" id="lessonCards"></div>
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+<script src="src/content/sprites.js"></script>
+<script src="src/content/layout.js"></script>
+<script src="src/core/util.js"></script>
+<script src="src/core/sprite.js"></script>
+<script src="src/core/state.js"></script>
+<script src="src/content/parts.js"></script>
+<script src="src/content/garage.js"></script>
+<script src="src/scene/camera.js"></script>
+<script src="src/scene/garage.js"></script>
+<script src="src/scene/scene.js"></script>
+<script src="src/interactions/actions.js"></script>
+<script src="src/content/lessons.js"></script>
+<script src="src/lessons/engine.js"></script>
+<script src="src/ui/progress.js"></script>
+<script src="src/ui/hud.js"></script>
+<script src="src/ui/partcard.js"></script>
+<script src="src/main.js"></script>
+</body>
+</html>
